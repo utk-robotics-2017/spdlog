@@ -4,6 +4,7 @@
 #
 
 cmake_minimum_required(VERSION 3.1)
+message("Building spdlog")
 project(spdlog VERSION 1.0.0)
 include(CTest)
 
