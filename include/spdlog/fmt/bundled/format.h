@@ -1,3 +1,6 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-default"
+
 /*
  Formatting library for C++
 
@@ -4482,6 +4485,13 @@ operator"" _a(const wchar_t *s, std::size_t)
 } // namespace fmt
 #endif // FMT_USE_USER_DEFINED_LITERALS
 
+#ifdef FMT_HEADER_ONLY
+# define FMT_FUNC inline
+# include "format.cc"
+#else
+# define FMT_FUNC
+#endif
+
 // Restore warnings.
 #if FMT_GCC_VERSION >= 406
 # pragma GCC diagnostic pop
@@ -4491,11 +4501,6 @@ operator"" _a(const wchar_t *s, std::size_t)
 # pragma clang diagnostic pop
 #endif
 
-#ifdef FMT_HEADER_ONLY
-# define FMT_FUNC inline
-# include "format.cc"
-#else
-# define FMT_FUNC
-#endif
-
 #endif  // FMT_FORMAT_H_
+
+#pragma GCC diagnostic pop
