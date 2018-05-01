@@ -38,6 +38,10 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
+target_link_libraries(spdlog INTERFACE fmt)
+
+target_compile_definitions(spdlog INTERFACE SPDLOG_FMT_EXTERNAL)
+
 set(HEADER_BASE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 if(SPDLOG_BUILD_EXAMPLES)
@@ -69,48 +73,6 @@ write_basic_package_version_file(
 
 # configure pkg config file
 configure_file("cmake/spdlog.pc.in" "${pkg_config}" @ONLY)
-
-# install targets
-install(
-    TARGETS spdlog
-    EXPORT "${targets_export_name}"
-)
-
-# install headers
-install(
-    DIRECTORY "${HEADER_BASE}/${PROJECT_NAME}"
-    DESTINATION "${include_install_dir}"
-)
-
-# install project version file
-install(
-    FILES "${version_config}"
-    DESTINATION "${config_install_dir}"
-)
-
-# install pkg config file
-install(
-    FILES "${pkg_config}"
-    DESTINATION "${pkgconfig_install_dir}"
-)
-
-# install project config file
-install(
-    EXPORT "${targets_export_name}"
-    NAMESPACE "${namespace}"
-    DESTINATION "${config_install_dir}"
-    FILE ${project_config}
-)
-
-# export build directory config file
-export(
-    EXPORT ${targets_export_name}
-    NAMESPACE "${namespace}"
-    FILE ${project_config}
-)
-
-# register project in CMake user registry
-export(PACKAGE ${PROJECT_NAME})
 
 file(GLOB_RECURSE spdlog_include_SRCS "${HEADER_BASE}/*.h")
 add_custom_target(spdlog_headers_for_ide SOURCES ${spdlog_include_SRCS})
